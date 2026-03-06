@@ -3,13 +3,17 @@
 
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import LoginModal from './LoginModal'
 
 export default function Navbar() {
   // Controla si el menú desplegable está abierto o cerrado
-  // Se abre al pasar el ratón por encima del botón y se cierra al salir
   const [open, setOpen] = useState(false)
+  // Controla si el modal de login está abierto
+  const [loginOpen, setLoginOpen] = useState(false)
 
   return (
+    <>
+    {loginOpen && <LoginModal onClose={() => setLoginOpen(false)} />}
     <nav className="sticky top-0 z-50 flex items-center justify-between px-8 py-4 bg-white border-b border-gray-200">
 
       {/* Logo — al hacer clic vuelve a la home
@@ -28,7 +32,10 @@ export default function Navbar() {
 
         {/* Botón de inicio de sesión — de momento no tiene funcionalidad,
             en el futuro abrirá un modal o redirigirá a /login */}
-        <button className="text-gray-700 hover:text-indigo-600 font-medium cursor-pointer">
+        <button
+          onClick={() => setLoginOpen(true)}
+          className="text-gray-700 hover:text-indigo-600 font-medium cursor-pointer"
+        >
           Iniciar sesión
         </button>
 
@@ -64,5 +71,6 @@ export default function Navbar() {
         </div>
       </div>
     </nav>
+    </>
   )
 }
