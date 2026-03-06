@@ -8,6 +8,8 @@ import HotelDetail from './pages/HotelDetail'
 import FlightDetail from './pages/FlightDetail'
 import VehicleDetail from './pages/VehicleDetail'
 import BookingForm from './pages/BookingForm'
+import NotFound from './pages/NotFound'
+import Footer from './components/Footer'
 import './App.css'
 
 // Root component — defines the global layout (Navbar always visible) and all routes
@@ -33,7 +35,11 @@ function App() {
         <Route path="/hotels/:id/book" element={<BookingForm />} />
         <Route path="/flights/:id/book" element={<BookingForm />} />
         <Route path="/vehicles/:id/book" element={<BookingForm />} />
+
+        {/* Ruta comodín — captura cualquier URL no definida y muestra la página 404 */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
+      <Footer />
     </>
   )
 }
