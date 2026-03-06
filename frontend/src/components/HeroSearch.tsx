@@ -2,7 +2,7 @@
 // Contiene los tabs de búsqueda (Hoteles / Vuelos / Vehículos),
 // un buscador dinámico según el tab activo, y una imagen decorativa.
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import hotelImg from '../assets/hotel.jpg'
 import flightImg from '../assets/flight.jpg'
@@ -12,6 +12,24 @@ export default function HeroSearch() {
 
   // Tab activo — controla qué título, subtítulo, buscador e imagen se muestran
   const [activeTab, setActiveTab] = useState<'hotels' | 'flights' | 'vehicles'>('hotels')
+
+  // Animación de entrada — el searchbar aparece desde abajo al cargar la página
+  const [visible, setVisible] = useState(false)
+  useEffect(() => {
+    const t = setTimeout(() => setVisible(true), 50)
+    return () => clearTimeout(t)
+  }, [])
+
+  // Animación al cambiar de tab — fade-out → cambia contenido → fade-in
+  const [contentVisible, setContentVisible] = useState(true)
+  const switchTab = (tab: 'hotels' | 'flights' | 'vehicles') => {
+    if (tab === activeTab) return
+    setContentVisible(false)
+    setTimeout(() => {
+      setActiveTab(tab)
+      setContentVisible(true)
+    }, 150)
+  }
 
   // Campos del buscador — compartidos entre los distintos tabs
   const [destination, setDestination] = useState('')
@@ -34,7 +52,8 @@ export default function HeroSearch() {
     <section className="relative bg-gray-50 px-8 py-16">
       <div className="max-w-6xl mx-auto flex items-center gap-12">
 
-        <div className="flex-1">
+        <div className={`flex-1 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+          <div className={`transition-all duration-150 ${contentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}>
 
           {/* Título dinámico según el tab activo */}
           <h1 className="text-5xl font-bold text-gray-900 leading-tight">
@@ -63,7 +82,7 @@ export default function HeroSearch() {
             {/* Tab Hoteles */}
             <button
               className="flex flex-col items-center gap-2 cursor-pointer w-16"
-              onClick={() => setActiveTab('hotels')}
+              onClick={() => switchTab('hotels')}
             >
               {/* El div cambia de color según si el tab está activo o no */}
               <div className={`p-3 rounded-xl border transition-colors ${
@@ -81,7 +100,7 @@ export default function HeroSearch() {
             {/* Tab Vuelos */}
             <button
               className="flex flex-col items-center gap-2 cursor-pointer w-16"
-              onClick={() => setActiveTab('flights')}
+              onClick={() => switchTab('flights')}
             >
               <div className={`p-3 rounded-xl border transition-colors ${
                 activeTab === 'flights'
@@ -98,7 +117,7 @@ export default function HeroSearch() {
             {/* Tab Vehículos */}
             <button
               className="flex flex-col items-center gap-2 cursor-pointer w-16"
-              onClick={() => setActiveTab('vehicles')}
+              onClick={() => switchTab('vehicles')}
             >
               <div className={`p-3 rounded-xl border transition-colors ${
                 activeTab === 'vehicles'
@@ -219,15 +238,16 @@ export default function HeroSearch() {
               </button>
             </div>
           )}
+          </div>{/* fin div animación tab */}
         </div>
 
         {/* Imágenes decorativas — posición absoluta dentro del <section relative>
             Las 3 se cargan al montar el componente para evitar delay al cambiar de tab.
             Solo se muestra la del tab activo, las demás quedan ocultas con "hidden".
             Para mover la imagen: cambia top-8 / right-50 por los valores que quieras */}
-        <img src={hotelImg} alt="Hotel" className={`absolute top-8 right-50 w-80 h-60 object-cover rounded-2xl shadow-md ${activeTab === 'hotels' ? '' : 'hidden'}`} />
-        <img src={flightImg} alt="Vuelo" className={`absolute top-8 right-50 w-80 h-60 object-cover rounded-2xl shadow-md ${activeTab === 'flights' ? '' : 'hidden'}`} />
-        <img src={vehiculoImg} alt="Vehículo" className={`absolute top-8 right-50 w-80 h-60 object-cover rounded-2xl shadow-md ${activeTab === 'vehicles' ? '' : 'hidden'}`} />
+        <img src={hotelImg} alt="Hotel" className={`absolute top-8 right-50 w-80 h-60 object-cover rounded-2xl shadow-md transition-all ${activeTab === 'hotels' ? '' : 'hidden'} ${visible && contentVisible ? 'opacity-100 scale-100 duration-700' : 'opacity-0 scale-95 duration-150'}`} />
+        <img src={flightImg} alt="Vuelo" className={`absolute top-8 right-50 w-80 h-60 object-cover rounded-2xl shadow-md transition-all ${activeTab === 'flights' ? '' : 'hidden'} ${visible && contentVisible ? 'opacity-100 scale-100 duration-700' : 'opacity-0 scale-95 duration-150'}`} />
+        <img src={vehiculoImg} alt="Vehículo" className={`absolute top-8 right-50 w-80 h-60 object-cover rounded-2xl shadow-md transition-all ${activeTab === 'vehicles' ? '' : 'hidden'} ${visible && contentVisible ? 'opacity-100 scale-100 duration-700' : 'opacity-0 scale-95 duration-150'}`} />
 
       </div>
     </section>

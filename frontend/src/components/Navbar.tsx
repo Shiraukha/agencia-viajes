@@ -10,7 +10,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false)
 
   return (
-    <nav className="flex items-center justify-between px-8 py-4 bg-white border-b border-gray-200">
+    <nav className="sticky top-0 z-50 flex items-center justify-between px-8 py-4 bg-white border-b border-gray-200">
 
       {/* Logo — al hacer clic vuelve a la home
           Usa <Link> de React Router para navegar sin recargar la página */}
@@ -45,17 +45,20 @@ export default function Navbar() {
 
           {/* Dropdown — solo se renderiza si open es true
               z-10 asegura que aparece por encima del resto del contenido */}
+          {/* pt-2 cubre el hueco entre el botón y el menú para que el hover no se interrumpa */}
           {open && (
-            <div className="absolute top-full right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg py-2 w-40 z-10">
-              <Link to="/hotels" className="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">
-                Hoteles
-              </Link>
-              <Link to="/flights" className="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">
-                Vuelos
-              </Link>
-              <Link to="/vehicles" className="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">
-                Vehículos
-              </Link>
+            <div className="absolute top-full right-0 pt-2 w-40 z-10">
+              <div className="bg-white border border-gray-200 rounded-lg shadow-lg py-2">
+                <Link to="/hotels" className="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">
+                  Hoteles
+                </Link>
+                <Link to="/flights" className="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">
+                  Vuelos
+                </Link>
+                <Link to="/vehicles" className="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">
+                  Vehículos
+                </Link>
+              </div>
             </div>
           )}
         </div>

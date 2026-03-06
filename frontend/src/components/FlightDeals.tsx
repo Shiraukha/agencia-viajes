@@ -2,7 +2,7 @@
 // Usa los vuelos de data/flights.ts y los muestra como tarjetas en carrusel
 // Incluye flechas de navegación para desplazarse por las tarjetas
 
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { flights } from '../data/flights'
 
 // Extrae el nombre de la ciudad del destino, eliminando el código de aeropuerto
@@ -27,6 +27,13 @@ export default function FlightDeals() {
   // Referencia al contenedor del carrusel para poder hacer scroll programático
   const scrollRef = useRef<HTMLDivElement>(null)
 
+  // Animación de entrada — igual que HeroSearch, aparece desde abajo al cargar
+  const [visible, setVisible] = useState(false)
+  useEffect(() => {
+    const t = setTimeout(() => setVisible(true), 50)
+    return () => clearTimeout(t)
+  }, [])
+
   // Desplaza el carrusel hacia la izquierda o derecha al pulsar las flechas
   const scroll = (direction: 'left' | 'right') => {
     if (!scrollRef.current) return
@@ -37,7 +44,7 @@ export default function FlightDeals() {
   }
 
   return (
-    <section className="px-8 py-12 max-w-6xl mx-auto">
+    <section className={`px-8 py-12 max-w-6xl mx-auto transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
 
       {/* Cabecera de la sección: título a la izquierda, enlace "Explorar" a la derecha */}
       <div className="flex items-center justify-between mb-6">
@@ -55,13 +62,13 @@ export default function FlightDeals() {
       {/* Carrusel de tarjetas — scroll horizontal, scrollbar oculta visualmente */}
       <div
         ref={scrollRef}
-        className="flex gap-4 overflow-x-auto scroll-smooth pb-2"
+        className="flex gap-4 overflow-x-auto scroll-smooth py-4 px-2"
         style={{ scrollbarWidth: 'none' }}
       >
         {flights.map((flight) => (
           <div
             key={flight.id}
-            className="flex-shrink-0 w-64 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md transition-shadow cursor-pointer overflow-hidden"
+            className="flex-shrink-0 w-64 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md hover:scale-105 transition-all duration-200 cursor-pointer overflow-hidden"
           >
             {/* Imagen generada a partir del nombre del destino */}
             <img
