@@ -1,9 +1,15 @@
+// FlightDetail — página de detalle de un vuelo concreto
+// Recibe el :id por la URL y busca el vuelo en los datos mock
+// Muestra info completa (aerolínea, origen, destino, fecha, duración, precio) y botón de reserva
+
 import { useParams, useNavigate } from 'react-router-dom'
 import { flights } from '../data/flights'
 
 export default function FlightDetail() {
+  // useParams extrae el :id de la URL (ej: /flights/2 → id = "2")
   const { id } = useParams()
   const navigate = useNavigate()
+  // Busca el vuelo cuyo id numérico coincide con el de la URL
   const flight = flights.find((f) => f.id === Number(id))
 
   if (!flight) return <p className="p-8 text-gray-500">Vuelo no encontrado.</p>

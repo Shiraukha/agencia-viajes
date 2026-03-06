@@ -1,7 +1,12 @@
+// Flights — página de listado de vuelos
+// Muestra todos los vuelos del archivo de datos mock (data/flights.ts)
+// Al hacer clic en "Ver detalle" navega a /flights/:id
+
 import { useNavigate } from 'react-router-dom'
 import { flights } from '../data/flights'
 
 export default function Flights() {
+  // useNavigate permite cambiar de ruta desde JavaScript (sin usar <Link>)
   const navigate = useNavigate()
 
   return (

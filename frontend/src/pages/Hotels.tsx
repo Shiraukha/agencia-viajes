@@ -1,7 +1,12 @@
+// Hotels — página de listado de hoteles
+// Muestra todos los hoteles del archivo de datos mock (data/hoteles.ts)
+// Al hacer clic en "Ver detalle" navega a /hotels/:id
+
 import { useNavigate } from 'react-router-dom'
 import { hotels } from '../data/hoteles'
 
 export default function Hotels() {
+  // useNavigate permite cambiar de ruta desde JavaScript (sin usar <Link>)
   const navigate = useNavigate()
 
   return (

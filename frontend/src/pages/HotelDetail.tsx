@@ -1,9 +1,16 @@
+// HotelDetail — página de detalle de un hotel concreto
+// Recibe el :id por la URL y busca el hotel en los datos mock
+// Muestra info completa (nombre, ubicación, estrellas, precio) y botón de reserva
+
 import { useParams, useNavigate } from 'react-router-dom'
 import { hotels } from '../data/hoteles'
 
 export default function HotelDetail() {
+  // useParams extrae el :id de la URL (ej: /hotels/3 → id = "3")
   const { id } = useParams()
   const navigate = useNavigate()
+  // Busca el hotel cuyo id numérico coincide con el de la URL
+  // Number(id) convierte el string de la URL a número para poder compararlo
   const hotel = hotels.find((h) => h.id === Number(id))
 
   if (!hotel) return <p className="p-8 text-gray-500">Hotel no encontrado.</p>
